@@ -18,7 +18,7 @@ def gameMode():
         print("\nPlease enter only numeric values.")
         return gameMode()
 
-
+#Used to display the current state of the board
 def displayBoard():
     global board
     for i in range(len(board)):
@@ -31,8 +31,14 @@ def displayBoard():
             print("\n----------")
     print("\n")
 
-#Get input function
-def getInput():
+#Receives the input from both the users and the AI if in singleplayer
+def getInput(mode, turn):
+
+    #Handles AI input
+    if mode == 1 and turn == False:
+          return getAI(turn)
+
+
     #Get row input
     while True:
         try:
@@ -61,27 +67,87 @@ def getInput():
     row-= 1
     col-= 1
 
+    #Outputs error to user and asks for new input if space is not empty
     if checkBoard(row, col) == False:
         print("Sorry that area has been filled in, please pick an empty spot on the board.\n")
-        return getInput()
+        return getInput(mode, turn)
 
     return row, col
+
+#Gets the row and col for the AI by calling the minimax algorithim
+def getAI(turn):
+    global board
+    bestMove = -1000
+    nextMove = (-1, -1)
+    for row in range(0,3):
+        for col in range(0,3):
+            if checkBoard(row, col) == True:
+                board[row][col] = "O"
+                move = miniMax(board, 0, turn)
+                board[row][col] = " "
+
+                if move > bestMove:
+                    bestMove = move
+                    nextMove = (row, col)
+
+
+    return nextMove
+
+#Minimax algorithim for picking AI move via recursion
+def miniMax(board, depth, isMax):
+
+    #Return values if game is in terminal state
+    if gameOver(board) and isMax == True:
+        return -10
+    if gameOver(board) and isMax == False:
+        return 10
+    if boardFull(board) and not gameOver(board):
+        return 0    
+
+    #The maximizer picks the best move for the AI
+    if isMax:
+        bestScore = -1000
+        for row in range(0,3):
+            for col in range(0,3):
+                if checkBoard(row, col) == True:
+                    board[row][col] = "O"
+                    score = miniMax(board, depth + 1, not isMax)
+                    board[row][col] = " "
+
+                    bestScore = max(bestScore, score)
+        return bestScore 
+
+    #The minimizer picks the best play for the human after each play by the AI
+    else:
+        bestScore = 1000
+        for row in range(0,3):
+            for col in range(0,3):
+                if checkBoard(row, col) == True:
+                    board[row][col] = "X"
+                    score = miniMax(board, depth + 1, not isMax)
+                    board[row][col] = " "
+
+                    bestScore = min(bestScore, score)
+        return bestScore
+
+
     
 
-#Create check board function
+#Checks for board availability
 def checkBoard(row, col):
     global board
     if board[row][col] != " ":
         return False
     return True
 
+#Updates board with given coordinates
 def updateBoard(row, col, turn, board):
     if turn == True:
         board[row][col] = "X"
     else:
         board[row][col] = "O"
 
-
+#Updates turn to next player
 def updateTurn(turn):
     if turn == True:
         turn = False
@@ -90,6 +156,7 @@ def updateTurn(turn):
 
     return turn
 
+#Checks if the board is full
 def boardFull(board):
     for i in range(len(board)):
         for j in range(len(board[i])):
@@ -97,6 +164,8 @@ def boardFull(board):
                 return False
     return True
 
+
+#Checks if there is a winning sequence on the board
 def gameOver(board):
     for i in range(len(board)):
         if board[i][0] == board[i][1] == board[i][2] != " ":
@@ -110,6 +179,7 @@ def gameOver(board):
     else:
         return False
 
+#Outputs terminal message for the end game
 def checkWinner(gameOver, turn):
     displayBoard()
     if gameOver and turn == False:
@@ -120,9 +190,12 @@ def checkWinner(gameOver, turn):
         print("Game over, Tie!")
 
 
-
 print("Welcome to Tic Tac Toe!\n")
 mode = gameMode()
+
+if mode == 3:
+    quit()
+
 board = [[" ", " ", " "],
          [" ", " ", " "],
          [" ", " ", " "]]
@@ -131,18 +204,10 @@ turn = True
 #Clear Terminal
 clearScreen()
 
-#Singleplayer
-if mode == 1:
-    displayBoard()
+while not boardFull(board) and not gameOver(board):
+    row, col = getInput(mode, turn)
+    updateBoard(row, col, turn, board)
+    turn = updateTurn(turn)
 
-#Multiplayer
-elif mode == 2:
-    while not boardFull(board) and not gameOver(board):
-        row, col = getInput()
-        updateBoard(row, col, turn, board)
-        turn = updateTurn(turn)
-
-    checkWinner(gameOver(board), turn)
-            
-else:
-    quit()
+checkWinner(gameOver(board), turn)
+        
