@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      table {
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      td{
+        border: 1px solid black;
+        width: 200px;
+        height: 200px;
+        font-size: 50px;
+        text-align: center;
+        
+      }
+
+      p {
+          font-size: larger;
+      }
+    </style>
+  </head>
+  <body>
+      <p>  
+    {% if gameWon == 1 %}
+        Game over, X wins!
+    
+    {% elif gameWon == 0 %} 
+        Game over, O wins!
+    {% else %}
+    Game over, Tie!
+
+    {% endif %}     
+      </p>   
+    
+    <table>
+      {% for i in range(3) %}
+      <tr>
+        {% for j in range(3) %}
+        <td>
+            {{game[i][j]}}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+
+      </tr>
+    </table>
+    <a href="{{ url_for('new_game')}}" style="text-decoration:none"> New Game</a>
+  </body>
+</html>

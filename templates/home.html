@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      td{
+        border: 1px solid black;
+        width: 200px;
+        height: 200px;
+        font-size: 50px;
+        text-align: center;
+      }
+
+      body{
+        font-size: x-large;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="{{ url_for('run_single')}}" style="text-decoration:none"> Click for singleplayer </a>
+    <br><a href="{{ url_for('run_game')}}" style="text-decoration:none"> Click for multiplayer </a>
+  </body>
+</html>

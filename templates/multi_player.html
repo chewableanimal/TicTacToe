@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      table {
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      td{
+        border: 1px solid black;
+        width: 200px;
+        height: 200px;
+        font-size: 50px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>  
+    <table>
+      {% for i in range(3) %}
+      <tr>
+        {% for j in range(3) %}
+        <td>
+          {% if game[i][j] == " " %}
+            <a href="{{ url_for('get', row =i, col=j)}}" style="text-decoration:none"> Click </a>
+          {% else %}
+            {{game[i][j]}}
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+
+      </tr>
+    </table>
+    <a href="{{ url_for('new_game')}}" style="text-decoration:none"> New Game</a>
+  </body>
+</html>
