@@ -74,8 +74,3 @@ def getSingle(row, col):
 
     return redirect(url_for("run_single"))
 
-# def getAi(board, turn):
-#     aiRow, aiCol = getAI(turn, board)
-#     board[aiRow][aiCol] = "O"
-#     turn = updateTurn()
-    
